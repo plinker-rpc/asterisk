@@ -108,10 +108,14 @@ class Asterisk {
     {
         $number = $params[0];
         $ext = $params[1];
-        $context = $params[1];
+        $context = $params[2];
 
         if (empty($number) || empty($ext)) {
             return 'number or extension not set';
+        }
+
+        if (empty($context)) {
+            return 'context not set';
         }
 
         if ($this->asm->connected) {
@@ -119,7 +123,7 @@ class Asterisk {
             $call = $this->asm->Originate(
                 'SIP/'.$ext,
                 $number,
-                'Internal-2000',
+                $context,
                 1
             );
 
@@ -142,7 +146,7 @@ class Asterisk {
 
             $result = array();
             foreach ($peers as $peer) {
-                if(preg_match('/(.*[\/].*)\s+([0-9]+.[0-9]+.[0-9]+.[0-9]+)\s+(\w)\s+(\w)\s+(\d+)\s+(\w+\s.*)/i',$peer, $matches)){
+                if (preg_match('/(.*[\/].*)\s+([0-9]+.[0-9]+.[0-9]+.[0-9]+)\s+(\w)\s+(\w)\s+(\d+)\s+(\w+\s.*)/i',$peer, $matches)) {
                     $row = array(
                         'ext' => $matches[1],
                         'ip' => $matches[2],
