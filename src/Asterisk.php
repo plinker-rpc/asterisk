@@ -142,18 +142,19 @@ class Asterisk {
                 'Command',
                 array('Command' => 'sip show peers')
             );
+
             $peers = explode("\n", $peers['data']);
 
             $result = array();
             foreach ($peers as $peer) {
-                if (preg_match('/(.*[\/].*)\s+([0-9]+.[0-9]+.[0-9]+.[0-9]+)\s+(\w)\s+(\w)\s+(\d+)\s+(\w+\s.*)/i',$peer, $matches)) {
+                if (preg_match('/(.*[\/].*)\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\d+)\s+(.*[)])/i',$peer, $matches)) {
                     $row = array(
                         'ext' => $matches[1],
                         'ip' => $matches[2],
                         'dynamic' => $matches[3],
                         'forceport' => $matches[4],
-                        'port' => $matches[5],
-                        'state' => $matches[6],
+                        'port' => $matches[6],
+                        'state' => $matches[7],
                     );
                     $result[] = array_map('trim', $row);
                 }
@@ -161,7 +162,6 @@ class Asterisk {
             $this->asm->disconnect();
 
             return $result;
-
         } else {
             return 'premature connection lost to asterisk manager';
         }
