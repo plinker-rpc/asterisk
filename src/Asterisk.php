@@ -8,7 +8,7 @@ class Asterisk {
     /**
      * Construct
      *
-     * @param array $config
+     * @param array $config - passed from the plinker client
      */
     public function __construct(array $config = array(
         'database' => array(
@@ -28,7 +28,7 @@ class Asterisk {
     )) {
         $this->config = $config;
 
-        //check database construct values
+        // check database construct values
         if (empty($this->config['database'])) {
             exit(json_encode($this->response(
                 'Bad Request',
@@ -77,7 +77,7 @@ class Asterisk {
      */
     private function _ASM_Connect()
     {
-        require_once(dirname(__FILE__).'/lib/phpagi-asmanager.php');
+        require_once(dirname(__FILE__) . '/lib/phpagi-asmanager.php');
 
         $this->asm = new \AGI_AsteriskManager(null, array(
             'server'   => $this->config['ami']['server'],
@@ -185,7 +185,7 @@ class Asterisk {
 
             $result = array();
             foreach ($peers as $peer) {
-                if (preg_match('/(.*[\/].*)\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\d+)\s+(.*[)])/i',$peer, $matches)) {
+                if (preg_match('/(.*[\/].*)\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\d+)\s+(.*[)])/i', $peer, $matches)) {
                     $row = array(
                         'ext' => $matches[1],
                         'ip' => $matches[2],
@@ -204,55 +204,5 @@ class Asterisk {
             return 'premature connection lost to asterisk manager';
         }
     }
-
-    // public function getLatestCalls($params = array())
-    // {
-    //     $count = $params[0];
-    //     return $this->pdo->asterisk->raw_select('SELECT * FROM cdr ORDER BY calldate DESC LIMIT '.(int) $count);
-    // }
-
-    // public function getContacts($params = array())
-    // {
-    //     return $this->pdo->asterisk->raw_select(
-    //         'SELECT *
-    //          FROM cid
-    //          ORDER BY id DESC
-    //          LIMIT '.(int) (isset($params[0]) && is_numeric($params[0]) ? $params[0] : 10)
-    //     );
-    // }
-
-    // public function getContact($params = array())
-    // {
-    //     return $this->pdo->asterisk->raw_select(
-    //         'SELECT *
-    //          FROM cid
-    //          WHERE id = "'.(int) $params[0].'"
-    //          ORDER BY id DESC
-    //          LIMIT 1'
-    //     );
-    // }
-
-    // public function newContact($params = array())
-    // {
-    //     return $this->pdo->asterisk->create('cid', array(array(
-    //         'name'    => isset($params[0]) ? trim($params[0]) : 'Undefined',
-    //         'number'  => isset($params[1]) ? trim($params[1]) : null,
-    //         'added'   => time(),
-    //         'updated' => time(),
-    //     )));
-    // }
-
-    // public function updateContact($params = array())
-    // {
-    //     $this->pdo->asterisk->update('cid', 'name', $params[1], 'id', $params[0]);
-    //     $this->pdo->asterisk->update('cid', 'number', $params[2], 'id', $params[0]);
-    //     $this->pdo->asterisk->update('cid', 'updated', time(), 'id', $params[0]);
-    //     return true;
-    // }
-
-    // public function deleteContact($params = array())
-    // {
-    //     return $this->pdo->asterisk->delete('cid', 'id', $params[0]);
-    // }
 
 }
