@@ -5,6 +5,11 @@ use RedBeanPHP\R;
 
 class Asterisk {
 
+    /**
+     * Construct
+     *
+     * @param array $config
+     */
     public function __construct(array $config = array(
         'database' => array(
             'dsn' => 'mysql:host=127.0.0.1;dbname=',
@@ -54,6 +59,9 @@ class Asterisk {
         }
     }
 
+    /**
+     * setter response, sets array structure and returns
+     */
     private function response($data = null, $status = 200, $errors = array())
     {
         return array(
@@ -63,6 +71,10 @@ class Asterisk {
         );
     }
 
+    /**
+     * Load ams manager class
+     * @scope private
+     */
     private function _ASM_Connect()
     {
         require_once(dirname(__FILE__).'/lib/phpagi-asmanager.php');
@@ -82,16 +94,31 @@ class Asterisk {
         return $this->asm->connected;
     }
 
+    /**
+     * Local getter for the asm command method
+     *
+     * @param array $params
+     */
     public function command($params = array())
     {
         return $this->asm->Command("{$params[0]}");
     }
 
+    /**
+     * Connect into AMI and issue asterisk command [queue show ?]
+     *
+     * @param array $parmams
+     */
     public function getQueue($params = array())
     {
         return $this->asm->Command("queue show {$params[0]}");
     }
 
+    /**
+     * Connect into AMI and issue asterisk command [core show channels]
+     *
+     * @param array $params
+     */
     public function coreShowChannels($params = array())
     {
         $result = $this->asm->Command("core show channels");
@@ -104,6 +131,11 @@ class Asterisk {
         );
     }
 
+    /**
+     * Connect into AMI and issue asterisk command [originate]
+     *
+     * @param array $params - contains $number, $ext, $context
+     */
     public function dial($params = array())
     {
         $number = $params[0];
@@ -134,6 +166,12 @@ class Asterisk {
         }
     }
 
+    /**
+     * Connect into AMI and retrieve asterisk command [sip show peers] and
+     * regex parse the response into an array
+     *
+     * @param array $params
+     */
     public function sipShowPeers($params = array())
     {
         if ($this->asm->connected) {
