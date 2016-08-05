@@ -1,5 +1,5 @@
 <?php
-namespace plinker\Asterisk;
+namespace Plinker\Asterisk;
 
 use RedBeanPHP\R;
 
@@ -8,7 +8,7 @@ class Asterisk {
     /**
      * Construct
      *
-     * @param array $config - passed from the plinker client
+     * @param array $config - passed from the Plinker client
      */
     public function __construct(array $config = array(
         'database' => array(
@@ -37,7 +37,7 @@ class Asterisk {
             ), JSON_PRETTY_PRINT));
         } else {
             //hook in redbean
-            new \plinker\Redbean\Redbean($this->config['database']);
+            new \Plinker\Redbean\Redbean($this->config['database']);
         }
 
         //check ami construct values
