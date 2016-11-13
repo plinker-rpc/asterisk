@@ -207,31 +207,49 @@ class Asterisk {
         }
     }
 
+    /**
+     *
+     */
     public function agiShowCommands($params = array())
     {
         return $this->asm->Command("agi show commands");
     }
-    
+
+    /**
+     *
+     */
     public function showChannels($params = array())
     {
         return $this->asm->Command("core show channels");
     }
 
+    /**
+     *
+     */
     public function getSysinfo($params = array())
     {
         return $this->asm->Command("core show sysinfo");
     }
-    
+
+    /**
+     *
+     */
     public function reload($params = array())
     {
         return $this->asm->Command("core reload");
-    }    
+    }
 
+    /**
+     *
+     */
     public function ExtensionState($params = array())
     {
         return $this->asm->ExtensionState(@$params[0], @$params[1], @$params[1]);
     }
 
+    /**
+     *
+     */
     public function getActiveCalls($params = array())
     {
         return trim(shell_exec('asterisk -rx "core show channels" | grep "active call"'));
@@ -254,11 +272,11 @@ class Asterisk {
     }
 
     /**
-         * Update bean by where query
-         * json $plink->updateWhere(string, string, array);
-         *
-         * @param array $params
-         */
+     * Update bean by where query
+     * json $plink->updateWhere(string, string, array);
+     *
+     * @param array $params
+     */
     public function updateWhere(array $params = array())
     {
         $result = R::findOne($params[0], $params[1]);
@@ -272,15 +290,14 @@ class Asterisk {
         return [];
     }
 
-
     /**
-         * Find all
-         *
-         * json $plink->findAll(string, string, array);
-         *
-         * @link http://www.redbeanphp.com/index.php?p=/finding#find_all
-         * @param array $params
-         */
+     * Find all
+     *
+     * json $plink->findAll(string, string, array);
+     *
+     * @link http://www.redbeanphp.com/index.php?p=/finding#find_all
+     * @param array $params
+     */
     public function findAll(array $params = array())
     {
         if (!empty($params[1]) && !empty($params[2])) {
@@ -294,15 +311,13 @@ class Asterisk {
         return R::exportAll($result);
     }
 
-
-
     /**
-         * Delete bean by where query
-         *
-         * json $plink->delete(string, string);
-         *
-         * @param array $params
-         */
+     * Delete bean by where query
+     *
+     * json $plink->delete(string, string);
+     *
+     * @param array $params
+     */
     public function deleteWhere(array $params = array())
     {
         $result = R::findOne($params[0], $params[1]);
@@ -310,25 +325,30 @@ class Asterisk {
     }
 
     /**
-         * Raw query
-         *
-         * json $plink->exec(string);
-         *
-         * @param array $params
-         * @return int
-         */
+     * Raw query
+     *
+     * json $plink->exec(string);
+     *
+     * @param array $params
+     * @return int
+     */
     public function exec(array $params = array())
     {
         return R::exec($params[0]);
     }
 
-
+    /**
+     *
+     */
     public function getLatestCalls($params = array())
     {
         $count = $params[0];
         return $this->pdo->asterisk->raw_select('SELECT * FROM cdr ORDER BY calldate DESC LIMIT '.(int) $count);
     }
 
+    /**
+     *
+     */
     public function getContacts($params = array())
     {
         return $this->pdo->asterisk->raw_select(
@@ -339,6 +359,9 @@ class Asterisk {
         );
     }
 
+    /**
+     *
+     */
     public function getContact($params = array())
     {
         return $this->pdo->asterisk->raw_select(
@@ -350,6 +373,9 @@ class Asterisk {
         );
     }
 
+    /**
+     *
+     */
     public function newContact($params = array())
     {
         return $this->pdo->asterisk->create('cid', array(array(
@@ -360,6 +386,9 @@ class Asterisk {
         )));
     }
 
+    /**
+     *
+     */
     public function updateContact($params = array())
     {
         $this->pdo->asterisk->update('cid', 'name', $params[1], 'id', $params[0]);
@@ -368,12 +397,17 @@ class Asterisk {
         return true;
     }
 
+    /**
+     *
+     */
     public function deleteContact($params = array())
     {
         return $this->pdo->asterisk->delete('cid', 'id', $params[0]);
     }
 
-
+    /**
+     *
+     */
     public function callContact($params = array())
     {
         $number = $params[0];
@@ -409,6 +443,9 @@ class Asterisk {
         }
     }
 
+    /**
+     *
+     */
     public function sipPeers($params = array())
     {
         if ($this->connected) {
