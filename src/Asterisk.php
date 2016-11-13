@@ -79,12 +79,14 @@ class Asterisk {
     {
         require_once(dirname(__FILE__) . '/lib/phpagi-asmanager.php');
 
-        $this->asm = new \AGI_AsteriskManager(null, array(
-            'server'   => $this->config['ami']['server'],
-            'port'     => $this->config['ami']['port'],
-            'username' => $this->config['ami']['username'],
-            'secret'   => $this->config['ami']['password'],
-        ));
+        if (empty($this->asm)) {
+            $this->asm = new \AGI_AsteriskManager(null, array(
+                'server'   => $this->config['ami']['server'],
+                'port'     => $this->config['ami']['port'],
+                'username' => $this->config['ami']['username'],
+                'secret'   => $this->config['ami']['password'],
+            ));
+        }
 
         if ($this->asm->connect()) {
             $this->asm->connected = true;
@@ -205,6 +207,11 @@ class Asterisk {
         }
     }
 
+    public function agiShowCommands($params = array())
+    {
+        return $this->asm->Command("agi show commands");
+    }
+    
     public function showChannels($params = array())
     {
         return $this->asm->Command("core show channels");
@@ -214,6 +221,11 @@ class Asterisk {
     {
         return $this->asm->Command("core show sysinfo");
     }
+    
+    public function reload($params = array())
+    {
+        return $this->asm->Command("core reload");
+    }    
 
     public function ExtensionState($params = array())
     {
@@ -224,6 +236,92 @@ class Asterisk {
     {
         return trim(shell_exec('asterisk -rx "core show channels" | grep "active call"'));
     }
+
+    /**
+     * Create
+     *
+     * json $asterisk->create(string, array);
+     *
+     * @param array $params
+     */
+    public function create(array $params = array())
+    {
+        $result = R::dispense($params[0]);
+        $result->import($params[1]);
+        R::store($result);
+
+        return R::exportAll($result);
+    }
+
+    /**
+         * Update bean by where query
+         * json $plink->updateWhere(string, string, array);
+         *
+         * @param array $params
+         */
+    public function updateWhere(array $params = array())
+    {
+        $result = R::findOne($params[0], $params[1]);
+
+        if (!empty($result)) {
+            $result->import($params[2]);
+            R::store($result);
+            return R::exportAll($result);
+        }
+
+        return [];
+    }
+
+
+    /**
+         * Find all
+         *
+         * json $plink->findAll(string, string, array);
+         *
+         * @link http://www.redbeanphp.com/index.php?p=/finding#find_all
+         * @param array $params
+         */
+    public function findAll(array $params = array())
+    {
+        if (!empty($params[1]) && !empty($params[2])) {
+            $result = R::findAll($params[0], $params[1], $params[2]);
+        } elseif (!empty($params[1]) && empty($params[2])) {
+            $result = R::findAll($params[0], $params[1]);
+        } else {
+            $result = R::findAll($params[0]);
+        }
+
+        return R::exportAll($result);
+    }
+
+
+
+    /**
+         * Delete bean by where query
+         *
+         * json $plink->delete(string, string);
+         *
+         * @param array $params
+         */
+    public function deleteWhere(array $params = array())
+    {
+        $result = R::findOne($params[0], $params[1]);
+        return R::trash($result);
+    }
+
+    /**
+         * Raw query
+         *
+         * json $plink->exec(string);
+         *
+         * @param array $params
+         * @return int
+         */
+    public function exec(array $params = array())
+    {
+        return R::exec($params[0]);
+    }
+
 
     public function getLatestCalls($params = array())
     {
@@ -274,6 +372,7 @@ class Asterisk {
     {
         return $this->pdo->asterisk->delete('cid', 'id', $params[0]);
     }
+
 
     public function callContact($params = array())
     {
