@@ -3,7 +3,8 @@ namespace Plinker\Asterisk;
 
 use RedBeanPHP\R;
 
-class Asterisk {
+class Asterisk
+{
 
     /**
      * Construct
@@ -25,7 +26,8 @@ class Asterisk {
             'username' => '',
             'password' => '',
         ),
-    )) {
+    ))
+    {
         $this->config = $config;
 
         // check database construct values
@@ -153,7 +155,6 @@ class Asterisk {
         }
 
         if ($this->asm->connected) {
-
             $call = $this->asm->Originate(
                 'SIP/'.$ext,
                 $number,
@@ -177,7 +178,6 @@ class Asterisk {
     public function sipShowPeers($params = array())
     {
         if ($this->asm->connected) {
-
             $peers = $this->asm->send_request(
                 'Command',
                 array('Command' => 'sip show peers')
@@ -428,7 +428,6 @@ class Asterisk {
         }
 
         if ($this->connected) {
-
             $call = $this->asm->Originate(
                 'SIP/'.$ext,
                 $number,
@@ -449,7 +448,6 @@ class Asterisk {
     public function sipPeers($params = array())
     {
         if ($this->connected) {
-
             $peers = $this->asm->send_request(
                 'Command',
                 array('Command' => 'sip show peers')
@@ -458,7 +456,7 @@ class Asterisk {
 
             $result = array();
             foreach ($peers as $peer) {
-                if(preg_match('/(.*[\/].*)\s+([0-9]+.[0-9]+.[0-9]+.[0-9]+)\s+(\w)\s+(\w)\s+(\d+)\s+(\w+\s.*)/i',$peer, $matches)){
+                if (preg_match('/(.*[\/].*)\s+([0-9]+.[0-9]+.[0-9]+.[0-9]+)\s+(\w)\s+(\w)\s+(\d+)\s+(\w+\s.*)/i', $peer, $matches)) {
                     $row = array(
                         'ext' => $matches[1],
                         'ip' => $matches[2],
@@ -473,7 +471,6 @@ class Asterisk {
             $this->asm->disconnect();
 
             return $result;
-
         } else {
             return 'premature connection lost to asterisk manager';
         }
@@ -771,5 +768,4 @@ ss7 set debug {on|off} linkset Enables SS7 debugging on a linkset
                  wat show span Displays WAT span information
               wat show version Displays libwat version
     */
-
 }
