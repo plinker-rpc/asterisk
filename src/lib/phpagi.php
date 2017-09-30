@@ -1757,7 +1757,7 @@ class AGI
 
       global $phpagi_error_handler_email;
       if (function_exists('mail') && !is_null($phpagi_error_handler_email)) { // generate email debugging information
-        // decode error level
+          // decode error level
           switch ($level) {
           case E_WARNING:
           case E_USER_WARNING:

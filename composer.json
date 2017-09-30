@@ -1,9 +1,9 @@
 {
     "name": "plinker/asterisk",
     "minimum-stability": "dev",
-    "description": "",
+    "description": "An Asterisk component which hooks into the Asterisk Management Interface on remote systems.",
     "license": "MIT",
-    "keywords": [],
+    "keywords": ["asterisk","rpc"],
     "homepage": "https://bitbucket.org/plinker/example/",
     "authors": [
         {
@@ -17,6 +17,7 @@
         "email": "plinker@icodes.it"
     },
     "require": {
+        "plinker/core": ">=0.1"
     },
     "autoload": {
         "psr-4": {
