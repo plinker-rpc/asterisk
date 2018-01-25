@@ -3,8 +3,8 @@
     "minimum-stability": "dev",
     "description": "An Asterisk component which hooks into the Asterisk Management Interface on remote systems.",
     "license": "MIT",
-    "keywords": ["asterisk","rpc"],
-    "homepage": "https://bitbucket.org/plinker/example/",
+    "keywords": ["asterisk","ami","rpc"],
+    "homepage": "https://github.com/plinker-rpc",
     "authors": [
         {
             "name": "Lawrence Cherone",
@@ -14,7 +14,7 @@
         }
     ],
     "support": {
-        "email": "plinker@icodes.it"
+        "email": "lawrence@cherone.co.uk"
     },
     "require": {
         "plinker/core": ">=0.1"
