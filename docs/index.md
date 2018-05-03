@@ -1,25 +1,22 @@
-!!! warning "No longer in development"
-    This component is no longer being developed.
+title: Asterisk
+description: PlinkerRPC PHP client/server allows you to securely execute generic PHP code and components on remote sites, while maintaining the feel of a local method call.
 
-PlinkerRPC PHP client/server makes it really easy to link and execute PHP component classes on remote systems, while maintaining the feel of a local method call.
+!!! warning "Development halted"
+    This component is no longer being actively developed, though bugs will be fixed if reported.
 
-An Asterisk component which hooks into the Asterisk Management Interface on remote systems.
+An Asterisk component which hooks into the Asterisk Management Interface (AMI) on remote systems. Using it adds addtional security as you can lock down AMI to listen on only on localhost.
 
-**Composer**
+## Install
 
-    {
-    	"require": {
-    		"plinker/core": ">=v0.1",
-    		"plinker/asterisk": ">=v0.1"
-    	}
-    }
+Require this package with composer using the following command:
 
+``` bash
+$ composer require plinker/asterisk
+```
 
+## Client
 
-Making a remote call.
---------------------
-
-WIP: To be updated with info on how to use this component, also add the tasks code.
+Creating a client instance is done as follows:
 
 
     <?php
@@ -28,39 +25,138 @@ WIP: To be updated with info on how to use this component, also add the tasks co
     /**
      * Initialize plinker client.
      *
-     * @param string $url to host
-     * @param string $component namespace of class to interface to
-     * @param string $public_key to authenticate on host
-     * @param string $private_key to authenticate on host
-     * @param string $config component construct config
+     * @param string $server - URL to server listener.
+     * @param string $config - server secret, and/or a additional component data
      */
-    $plink = new Plinker\Core\Client(
-        'http://example.com',
-        'Test\Demo',
-        'username',
-        'password',
-        array(
-            'time' => time()
-        )
+    $client = new \Plinker\Core\Client(
+        'http://example.com/server.php',
+        [
+            'secret' => 'a secret password',
+            'database' => [
+                'dsn' => 'mysql:host=127.0.0.1;dbname=asterisk',
+                'username' => '',
+                'password' => '',
+                'database' => '',
+                'freeze' => false,
+                'debug' => false
+            ],
+            'ami' => [
+                'server' => '127.0.0.1',
+                'port' => '5038',
+                'username' => '',
+                'password' => ''
+            ]
+        ]
     );
-    echo '<pre>'.print_r($plink->test(), true).'</pre>';
+    
+    // or using global function
+    $client = plinker_client('http://example.com/server.php', 'a secret password', [
+        'database' => [
+            'dsn' => 'mysql:host=127.0.0.1;dbname=asterisk',
+            'username' => '',
+            'password' => '',
+            'database' => '',
+            'freeze' => false,
+            'debug' => false
+        ],
+        'ami' => [
+            'server' => '127.0.0.1',
+            'port' => '5038',
+            'username' => '',
+            'password' => ''
+        ]
+    ]);
+   
+ 
+## Methods
+
+Once setup, you call the class though its namespace to its method.
 
 
-**then the server part...**
+### Command
 
-    <?php
-    require 'vendor/autoload.php';
+Execute ASM command.
 
-    /**
-     * POST Server Part
-     */
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $server = new Plinker\Core\Server(
-            $_POST,
-            'username',
-            'password'
-        );
-        exit($server->execute());
-    }
+**Call**
 
-See the [organisations page](https://github.com/plinker-rpc) for additional components.
+
+```
+$result = $client->asterisk->command('sip show peers');
+```
+
+**Response**
+```
+
+```
+
+### Get Queue
+
+Connect into AMI and issue asterisk command [queue show *].
+
+**Call**
+
+
+```
+$result = $client->asterisk->getQueue('foo');
+```
+
+**Response**
+```
+
+```
+
+### Show Channels
+
+Connect into AMI and issue asterisk command [core show channels].
+
+**Call**
+
+
+```
+$result = $client->asterisk->coreShowChannels();
+```
+
+**Response**
+```
+Array
+(
+    'active_channels' => 0,
+    'active_calls' => 0,
+    'calls_processed' => 0
+}
+```
+
+And other methods see: `vendor/asterisk/src/Asterisk.php`
+
+## Testing
+
+There are no tests setup for this component.
+
+## Contributing
+
+Please see [CONTRIBUTING](https://github.com/plinker-rpc/asterisk/blob/master/CONTRIBUTING) for details.
+
+## Security
+
+If you discover any security related issues, please contact me via [https://cherone.co.uk](https://cherone.co.uk) instead of using the issue tracker.
+
+## Credits
+
+- [Lawrence Cherone](https://github.com/lcherone)
+- [All Contributors](https://github.com/plinker-rpc/asterisk/graphs/contributors)
+
+
+## Development Encouragement
+
+If you use this project and make money from it or want to show your appreciation,
+please feel free to make a donation [https://www.paypal.me/lcherone](https://www.paypal.me/lcherone), thanks.
+
+## Sponsors
+
+Get your company or name listed throughout the documentation and on each github repository, contact me at [https://cherone.co.uk](https://cherone.co.uk) for further details.
+
+## License
+
+The MIT License (MIT). Please see [License File](https://github.com/plinker-rpc/asterisk/blob/master/LICENSE) for more information.
+
+See [organisations page](https://github.com/plinker-rpc) for additional components.
