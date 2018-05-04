@@ -1,5 +1,4 @@
-title: Asterisk
-description: PlinkerRPC PHP client/server allows you to securely execute generic PHP code and components on remote sites, while maintaining the feel of a local method call.
+# Asterisk
 
 !!! warning "Development halted"
     This component is no longer being actively developed, though bugs will be fixed if reported.

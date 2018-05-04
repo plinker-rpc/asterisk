@@ -1,5 +1,4 @@
-**Plinker-RPC - Asterisk**
-=========
+# PlinkerRPC - Asterisk
 
 !!! This component is no longer being actively developed, though bugs will be fixed if reported.
 
