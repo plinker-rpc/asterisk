@@ -3,7 +3,8 @@
 !!! warning "Development halted"
     This component is no longer being actively developed, though bugs will be fixed if reported.
 
-An Asterisk component which hooks into the Asterisk Management Interface (AMI) on remote systems. Using it adds addtional security as you can lock down AMI to listen on only on localhost.
+An Asterisk component which hooks into the Asterisk Management Interface (AMI) on remote systems. 
+Using it adds additional layer of security as you can now lock down AMI to listen on only on localhost.
 
 ## Install
 
