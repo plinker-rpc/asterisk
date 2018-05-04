@@ -1,11 +1,27 @@
 <?php
+/*
+ +------------------------------------------------------------------------+
+ | Plinker-RPC PHP                                                        |
+ +------------------------------------------------------------------------+
+ | Copyright (c)2017-2018 (https://github.com/plinker-rpc/asterisk)       |
+ +------------------------------------------------------------------------+
+ | This source file is subject to MIT License                             |
+ | that is bundled with this package in the file LICENSE.                 |
+ |                                                                        |
+ | If you did not receive a copy of the license and are unable to         |
+ | obtain it through the world-wide-web, please send an email             |
+ | to license@cherone.co.uk so we can send you a copy immediately.        |
+ +------------------------------------------------------------------------+
+ | Authors: Lawrence Cherone <lawrence@cherone.co.uk>                     |
+ +------------------------------------------------------------------------+
+ */
+ 
 namespace Plinker\Asterisk;
 
 use RedBeanPHP\R;
 
 class Asterisk
 {
-
     /**
      * Construct
      *
@@ -103,9 +119,9 @@ class Asterisk
      *
      * @param array $params
      */
-    public function command($params = array())
+    public function command($param = '')
     {
-        return $this->asm->Command("{$params[0]}");
+        return $this->asm->Command("{$param}");
     }
 
     /**
@@ -113,9 +129,9 @@ class Asterisk
      *
      * @param array $parmams
      */
-    public function getQueue($params = array())
+    public function getQueue($param = '')
     {
-        return $this->asm->Command("queue show {$params[0]}");
+        return $this->asm->Command("queue show {$param}");
     }
 
     /**
